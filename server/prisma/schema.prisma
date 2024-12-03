@@ -1,0 +1,24 @@
+generator client {
+  provider        = "prisma-client-go"
+  previewFeatures = ["driverAdapters", "postgresqlExtensions", "multiSchema"]
+  binaryTargets   = ["native", "linux-musl-openssl-3.0.x", "linux-musl-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis]
+  schemas    = ["product"]
+}
+
+model product {
+  id          Int      @id @default(autoincrement()) // Primary Key
+  title       String
+  description String
+  image       String
+  price       Int
+  createdAt   DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @db.Timestamptz(6)
+
+   @@schema("product")
+}
